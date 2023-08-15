@@ -16,7 +16,7 @@ const musicController = {
         VALUES ($1, $2, $3, $4)
         RETURNING *`;
             const values = [name, image, file, album_id];
-            const result = await pool.query(query, values);
+            const result = await postgre.query(query, values);
             res.json({ msg: 'Added new music', data: result.rows[0] });
         } catch (error) {
             res.json({ msg: error.message });
