@@ -12,5 +12,5 @@ app.use(function (req, res, next) {
 })
 app.use(express.json())
 const musicRouter = require('./routes/music')
-app.use("/api/v1/musics", musicRouter)
+app.use("/api", musicRouter)
 app.listen(process.env.PORT, () => console.log("Server is running on port 5000"))
