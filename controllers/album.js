@@ -16,7 +16,7 @@ const albumController = {
         VALUES ($1)
         RETURNING *`;
             const values = [name];
-            const result = await pool.query(query, values);
+            const result = await postgre.query(query, values);
             res.json({ msg: 'Added new album', data: result.rows[0] });
         } catch (error) {
             res.json({ msg: error.message });
