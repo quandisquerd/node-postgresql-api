@@ -1,6 +1,8 @@
 const express = require("express")
 const app = express()
+const cors = require("cors")
 require('dotenv').config()
+app.use(cors())
 app.use(express.json())
 const musicRouter = require('./routes/music')
 app.use("/api/v1/musics", musicRouter)
