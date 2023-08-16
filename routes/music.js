@@ -5,5 +5,5 @@ const musicController = require('../controllers/music')
 
 router.get("/musics", musicController.getAll)
 router.post("/musics/add", musicController.add)
-
+router.delete("/musics/:id", musicController.remove)
 module.exports = router
