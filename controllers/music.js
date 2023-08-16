@@ -21,6 +21,17 @@ const musicController = {
         } catch (error) {
             res.json({ msg: error.message });
         }
+    },
+    remove: async (req, res) => {
+        const { id } = req.params;
+        try {
+            const query = `DELETE FROM musics
+WHERE id = ${id}`
+            const result = await postgre.query(query);
+            return res.json({ message: 'Xoa thanh cong!', data: result.rows[0] })
+        } catch (err) {
+            return res.json({ msg: err.message });
+        }
     }
 }
 
