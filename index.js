@@ -13,6 +13,8 @@ app.use(function (req, res, next) {
 app.use(express.json())
 const musicRouter = require('./routes/music')
 const albumRouter = require('./routes/album')
+const authRouter = require('./routes/auth')
 app.use("/api", musicRouter)
 app.use("/api", albumRouter)
+app.use("/api", authRouter)
 app.listen(process.env.PORT, () => console.log("Server is running on port 5000"))
