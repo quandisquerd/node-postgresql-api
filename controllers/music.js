@@ -32,6 +32,17 @@ WHERE id = ${id}`
         } catch (err) {
             return res.json({ msg: err.message });
         }
+    },
+    search: async (req, res) => {
+        const { name } = req.body;
+        try {
+            const query = 'SELECT * FROM musics WHERE name ILIKE $1';
+            const values = [`%${name}%`];
+            const result = await postgre.query(query, values)
+            return res.json({ message: 'Tìm Thấy Bài Hát!', data: result.rows })
+        } catch (err) {
+            return res.json({ msg: err.message });
+        }
     }
 }
 
