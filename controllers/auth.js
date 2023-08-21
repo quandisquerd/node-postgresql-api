@@ -20,11 +20,29 @@ const authController = {
             const { id } = req.params
             const query = `DELETE FROM users WHERE id = ${id}`
             const result = await postgre.query(query)
-            if (result.rowCount>0) {
+            if (result.rowCount > 0) {
                 return res.json({ message: 'Xóa thành công!' })
             } else {
                 return res.json({ message: 'Lỗi xóa!' })
             }
+        } catch (err) {
+            return res.status(500).json({ message: 'Loi api', msg: err.message })
+        }
+    },
+    signin: async (req, res) => {
+        try {
+            const { email, password } = req.body
+            const query = `SELECT * FROM users WHERE email ='${email}'`
+            const result = await postgre.query(query)
+            const user = result.rows[0]
+            const passwordMatch = await bcrypt.compare(password, user.password)
+            if (passwordMatch) {
+                const token = jwt.sign({ id: user.id }, 'bo_quan', { expiresIn: "1d" })
+                return res.json({ message: 'Đăng nhập thành công!', token: token, user: user })
+            }
+            return res.json({
+                message: "Email hoặc mật khẩu không chính xác",
+            });
         } catch (err) {
             return res.status(500).json({ message: 'Loi api', msg: err.message })
         }
