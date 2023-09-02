@@ -43,7 +43,18 @@ WHERE id = ${id}`
         } catch (err) {
             return res.json({ msg: err.message });
         }
-    }
+    },
+    getOne: async (req, res) => {
+        const { id } = req.params;
+        try {
+            const query = `SELECT * FROM musics
+WHERE id = ${id}`
+            const result = await postgre.query(query);
+            return res.json({ message: 'Lấy 1 thanh cong!', data: result.rows[0] })
+        } catch (err) {
+            return res.json({ msg: err.message });
+        }
+    },
 }
 
 module.exports = musicController
