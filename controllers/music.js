@@ -36,7 +36,7 @@ WHERE id = ${id}`
     search: async (req, res) => {
         const { name } = req.body;
         try {
-            const query = 'SELECT * FROM musics WHERE name ILIKE $1';
+            const query = 'SELECT * FROM musics WHERE name LIKE $1';
             const values = [`%${name}%`];
             const result = await postgre.query(query, values)
             return res.json({ message: 'Tìm Thấy Bài Hát!', data: result.rows })
