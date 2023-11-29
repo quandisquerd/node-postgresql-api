@@ -5,12 +5,7 @@ const authController = {
     signup: async (req, res, next) => {
         try {
             const { name, address, email, password, image } = req.body;
-             const checkUserQuery = "SELECT * FROM users WHERE email = $1";
-    const { rows } = await postgre.query(checkUserQuery, [email]);
-
-    if (rows) {
-      return res.status(400).json({ message: "Tài khoản đã tồn tại" });
-    }
+      
             const hashedPassword = await bcrypt.hash(password, 5)
             const query = `INSERT INTO users( name, address, email, password, image, role ) VALUES ('${name}', '${address}','${email}', '${hashedPassword}', '${image}', 'member') RETURNING * `
             const result = await postgre.query(query)
