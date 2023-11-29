@@ -46,7 +46,7 @@ const authController = {
                 const token = jwt.sign({ id: user.id }, 'bo_quan', { expiresIn: "1d" })
                 return res.json({ message: 'Đăng nhập thành công!', token: token, user: user })
             }
-            return res.json({
+            return res.status(500).json({
                 message: "Email hoặc mật khẩu không chính xác",
             });
         } catch (err) {
