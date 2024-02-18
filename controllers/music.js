@@ -1,13 +1,36 @@
 const postgre = require('../database')
+
 const musicController = {
-    getAll: async (req, res) => {
-        try {
-            const { rows } = await postgre.query("select * from musics ORDER BY RANDOM()")
-            res.json({ msg: "OK", data: rows })
-        } catch (error) {
-            res.json({ msg: error.msg })
+    let shuffledRows = [];
+const shuffleArray = (array) => {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    
+    return shuffledArray;
+};
+const refreshShuffledRows = async () => {
+    try {
+        const { rows } = await postgre.query("SELECT * FROM musics");
+        shuffledRows = shuffleArray(rows);
+        console.log("Danh sách bài hát đã được xáo trộn lại:", shuffledRows);
+    } catch (error) {
+        console.error("Lỗi khi lấy danh sách bài hát:", error);
+    }
+};
+
+getAll: async (req, res) => {
+    try {
+        if (shuffledRows.length === 0) {
+            await refreshShuffledRows();
         }
-    },
+        res.json({ msg: "OK", data: shuffledRows });
+    } catch (error) {
+        res.json({ msg: error.msg });
+    }
+},
     add: async (req, res) => {
         const { name, image, file, album_id } = req.body;
         try {
