@@ -2,27 +2,13 @@ const postgre = require('../database')
 
 const musicController = {
      getAll: async (req, res) => {
-    try {
-        const countQuery = await postgre.query("SELECT COUNT(*) FROM musics");
-        const totalCount = countQuery.rows[0].count;
-        let randomIndexes = [];
-        const maxLimit = 10
-        for (let i = 0; i < totalCount; i++) {
-            randomIndexes.push(i);
+        try {
+            const { rows } = await postgre.query("select * from musics order by random()")
+            res.json({ msg: "OK", data: rows })
+        } catch (error) {
+            res.json({ msg: error.msg })
         }
-        for (let i = randomIndexes.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [randomIndexes[i], randomIndexes[j]] = [randomIndexes[j], randomIndexes[i]];
-        }
-        const selectedIndexes = randomIndexes.slice(0, maxLimit);
-        const whereCondition = selectedIndexes.map(index => `index_column = ${index}`).join(" OR ");
-        const { rows } = await postgre.query(`SELECT * FROM musics WHERE ${whereCondition}`);
-        
-        return res.json({ msg: "OK", data: rows });
-    } catch (error) {
-         return res.json({ msg: error.msg });
-    }
-},
+    },
     add: async (req, res) => {
         const { name, image, file, album_id } = req.body;
         try {
