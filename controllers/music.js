@@ -18,9 +18,9 @@ const musicController = {
         const whereCondition = selectedIndexes.map(index => `index_column = ${index}`).join(" OR ");
         const { rows } = await postgre.query(`SELECT * FROM musics WHERE ${whereCondition}`);
         
-        res.json({ msg: "OK", data: rows });
+        return res.json({ msg: "OK", data: rows });
     } catch (error) {
-        res.json({ msg: error.msg });
+         return res.json({ msg: error.msg });
     }
 },
     add: async (req, res) => {
